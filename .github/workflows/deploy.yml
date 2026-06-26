@@ -33,10 +33,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # Write PLAIN (unhashed) host keys — Net::SSH, which Kamal uses, matches
+      # hashed (`ssh-keyscan -H`) entries unreliably and raises HostKeyMismatch.
       - name: Add droplet to known_hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H "$DROPLET_IP" >> ~/.ssh/known_hosts
+          ssh-keygen -R "$DROPLET_IP" 2>/dev/null || true
+          ssh-keyscan "$DROPLET_IP" >> ~/.ssh/known_hosts
 
       - name: Load deploy SSH key
         uses: webfactory/ssh-agent@v0.9.0
