@@ -1,13 +1,17 @@
 # Name of your application. Used to uniquely configure containers.
 service: demo_01
 
-# Name of the container image (use your-user/app-name on external registries).
-image: demo_01
+# Name of the container image. For DigitalOcean Container Registry the path is
+# registry.digitalocean.com/<registry-name>/<repo>, so prefix the image with your
+# DOCR registry name. Replace REGISTRY_NAME below with your registry's name.
+image: registry.digitalocean.com/victor-peralta-registry/demo_01
 
-# Deploy to these servers.
+# Deploy to these servers. DROPLET_IP is read from the environment so the same
+# value is shared by local runs, CI, and the SSH known_hosts step (set it as a
+# GitHub Actions repository variable, and `export DROPLET_IP=...` locally).
 servers:
   web:
-    - 192.168.0.1
+    - <%= ENV["DROPLET_IP"] %>
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -26,15 +30,14 @@ servers:
 
 # Where you keep your container images.
 registry:
-  # Alternatives: hub.docker.com / registry.digitalocean.com / ghcr.io / ...
-  server: localhost:5555
+  server: registry.digitalocean.com
 
-  # Needed for authenticated registries.
-  # username: your-user
-
-  # Always use an access token rather than real password when possible.
-  # password:
-  #   - KAMAL_REGISTRY_PASSWORD
+  # DigitalOcean Container Registry authenticates with a DO API token used as
+  # BOTH the username and the password. Both are pulled from .kamal/secrets.
+  username:
+    - KAMAL_REGISTRY_USERNAME
+  password:
+    - KAMAL_REGISTRY_PASSWORD
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
