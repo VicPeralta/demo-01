@@ -43,5 +43,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      # .kamal/secrets reads config/master.key. It's git-ignored (and not in the
+      # repo), so recreate it here from the secret. printf '%s' writes no trailing
+      # newline; .dockerignore keeps it out of the image.
+      - name: Write Rails master key
+        run: printf '%s' "$RAILS_MASTER_KEY" > config/master.key
+
       - name: Deploy with Kamal
         run: bin/kamal deploy
