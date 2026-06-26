@@ -4,7 +4,7 @@ service: demo_01
 # Name of the container image. For DigitalOcean Container Registry the path is
 # registry.digitalocean.com/<registry-name>/<repo>, so prefix the image with your
 # DOCR registry name. Replace REGISTRY_NAME below with your registry's name.
-image: registry.digitalocean.com/victor-peralta-registry/demo_01
+image: victor-peralta-registry/demo_01
 
 # Deploy to these servers. DROPLET_IP is read from the environment so the same
 # value is shared by local runs, CI, and the SSH known_hosts step (set it as a
