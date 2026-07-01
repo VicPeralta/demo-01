@@ -31,7 +31,7 @@ jobs:
           bundler-cache: true
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       # Write PLAIN (unhashed) host keys — Net::SSH, which Kamal uses, matches
       # hashed (`ssh-keyscan -H`) entries unreliably and raises HostKeyMismatch.
